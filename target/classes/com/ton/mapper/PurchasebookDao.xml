@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace:该mapper.xml映射文件的 唯一标识 -->
+<mapper namespace="com.ton.mapper.PurchasebookDao">
+	<!-- 增加书本
+	<insert id="Purchasebook" parameterType="com.ton.entity.Purchasebook" >
+		insert into Purchasebook values(#{bookid},#{bookname},#{bookauthor},#{bookpublisher},#{bookprice},#{bookquantity},#{studentname},#{bookdate},#{lackbooks})
+	</insert>-->
+
+	<insert id="Stuinbook" parameterType="com.ton.entity.Stuinbook" >
+		insert into stuinbook values(#{bookid},#{bookname},#{bookauthor},#{bookpublisher},#{bookprice},#{bookquantity},#{studentname},#{bookdate},#{bookstate},#{lackbooks})
+	</insert>
+
+	<insert id="lockbook" parameterType="com.ton.entity.Lockbook" >
+		insert into Lockbook values(#{bookid},#{bookname},#{bookauthor},#{bookpublisher},#{bookprice},#{bookquantity})
+	</insert>
+	<insert id="buyerinbooks" parameterType="com.ton.entity.Books" >
+		insert into Books values(#{bookid},#{bookname},#{bookauthor},#{bookpublisher},#{bookprice},#{major},#{bookquantity})
+	</insert>
+	<!-- 查询已存在的书本信息 -->
+<!--	<select id="querryPurchasebooks" 	resultType="com.ton.entity.Purchasebook"  >-->
+<!--		   select * from Purchasebook-->
+<!--	</select>-->
+
+	<select id="querybooks" 	resultType="com.ton.entity.Books"  >
+		   select * from Books
+	</select>
+
+<!--	<select id="queryEbooks"   resultMap="class_Existingbooks_map">-->
+<!--		select  Existingbooks.*,Purchasebook.* from Existingbooks-->
+<!--		inner join Purchasebook-->
+<!--		on Existingbooks.id = Purchasebook.bookid-->
+
+<!--	</select>-->
+
+<!--	<resultMap type="com.ton.entity.Existingbooks" id="class_Existingbooks_map">-->
+
+<!--		<id  property="id" column="id"></id>-->
+<!--		<result  property="bookstate" column="bookstate"/>-->
+
+<!--		<association property="purchasebook" javaType="com.ton.entity.Purchasebook">-->
+<!--			<id property="bookid" column="bookid"/>-->
+<!--			<result  property="bookname" column="bookname"/>-->
+<!--			<result property="bookauthor" column="bookauthor"/>-->
+<!--			<result  property="bookpublisher" column="bookpublisher"/>-->
+<!--			<result property="bookprice" column="bookprice"/>-->
+<!--			<result  property="bookquantity" column="bookquantity"/>-->
+<!--			<result property="studentname" column="studentname"></result>-->
+<!--			<result property="bookdate" column="bookdate"></result>-->
+
+<!--		</association>-->
+<!--	</resultMap>-->
+
+	<!--根据物品id删除该物品-->
+
+	<delete id="deletebooksbyid"  parameterType="String">
+		delete  from Stuinbook   where Stuinbook.bookid = #{bookid}
+	</delete>
+
+	<delete id="deletelackbook"  parameterType="String">
+		delete  from Lockbook   where Lockbook.bookid = #{bookid}
+	</delete>
+
+	<update id="UpdateBook" parameterType="com.ton.entity.Stuinbook">
+         UPDATE Stuinbook SET bookstate = #{bookstate},lackbooks = #{lackbooks} where bookid = #{bookid}
+    </update>
+
+	<update id="buyerupdatebook" parameterType="com.ton.entity.Books">
+         UPDATE Books SET bookquantity = #{bookquantity} where bookid = #{bookid}
+    </update>
+
+	<update id="buyeruplbook" parameterType="com.ton.entity.Lockbook">
+         UPDATE Lockbook SET bookquantity = #{bookquantity} where bookid = #{bookid}
+    </update>
+	<!-- 查询所有书本 -->
+	<select id="querystuinbook" resultType="com.ton.entity.Stuinbook">
+        SELECT * FROM Stuinbook
+    </select>
+
+	<select id="buyerqlbook" resultType="com.ton.entity.Lockbook">
+        SELECT * FROM Lockbook
+    </select>
+	<select id="querystuinbookbyname" resultType="com.ton.entity.Stuinbook" parameterType="string">
+        SELECT * FROM Stuinbook WHERE bookname = #{bookname}
+    </select>
+
+	<select id="querybookbyname" resultType="com.ton.entity.Books" parameterType="string">
+        SELECT * FROM Books WHERE bookname = #{bookname}
+    </select>
+
+	<select id="buyerqlbookbyid" resultType="com.ton.entity.Lockbook" parameterType="string">
+        SELECT * FROM Lockbook WHERE bookname = #{bookname}
+    </select>
+	<select id="studentqstuinbookbySname" resultType="com.ton.entity.Stuinbook" parameterType="string">
+        SELECT * FROM Stuinbook WHERE studentname = #{studentname}
+    </select>
+
+</mapper>

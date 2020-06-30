@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+
+
+	<!-- 扫描service包下所有使用注解的类型 -->
+<!--	<context:component-scan base-package="com.ton.service"/>-->
+<!--	 依赖注入：给service注入dao-->
+
+
+	<bean id="userService" class="com.ton.service.impl.UserServiceimpl">
+		<property name="userDao"  ref="userDao"></property>
+	</bean>
+	<bean id="BookService" class="com.ton.service.impl.BookServiceimpl">
+		<property name="purchasebookDao"  ref="purchasebookDao"></property>
+	</bean>
+	
+	<!-- 给controller注入service
+	<bean id="studentController" class="org.lanqiao.controller.StudentController">
+		<property name="studentService" ref="studentService"></property>
+	</bean>
+ 	-->
+
+	
+	<!-- 加载db.properties文件 -->
+	<bean  id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="locations">
+			<array>
+				<value>classpath:db.properties</value>
+			</array>
+		</property>
+	</bean>
+	<!-- 配置配置数据库信息（替代mybatis的配置文件conf.xml） -->
+
+
+	<!-- 数据库连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"/>
+		<property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="user" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+
+
+
+	</bean>
+	
+	
+	<!-- conf.xml :  数据源,mapper.xml -->
+	<!-- 配置MyBatis需要的核心类：SqlSessionFactory -->
+	<!-- 在SpringIoc容器中 创建MyBatis的核心类 SqlSesionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 加载mapper.xml路径 -->
+		<property name="mapperLocations" value="classpath:com/ton/mapper/*.xml"></property>
+
+		</bean>
+
+	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+
+	<!-- 将MyBatis的SqlSessionFactory 交给Spring -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	 	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	 	<property name="basePackage" value="com.ton.mapper"></property>
+<!--		<property name="basePackage" value="com.ton.entity"/>-->
+	 	<!--上面basePackage所在的property的作用：
+	 	将org.lanqiao.mapper包中，所有的接口   产生与之对应的 动态代理对象
+	 	（对象名 就是 首字母小写的接口名） ：studentMapper.querystudentBYNO();
+	 	  -->
+	 </bean>
+</beans>

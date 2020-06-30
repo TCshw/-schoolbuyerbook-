@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace:该mapper.xml映射文件的 唯一标识 -->
+<mapper namespace="com.ton.mapper.UserDao">
+
+
+	<select id="selectAdminById" 	parameterType="int"  	resultType="com.ton.entity.Admin"  >
+		SELECT * FROM Admin WHERE adminid=#{id}
+	</select>
+	<select id="selectStuById" resultType="com.ton.entity.Student" parameterType="int">
+        SELECT * FROM Student WHERE stuId=#{id}
+    </select>
+
+	<select id="selectBuyerById" resultType="com.ton.entity.Buyer" parameterType="int">
+        SELECT * FROM Buyer WHERE buyerid=#{id}
+    </select>
+
+	<update id="updateStuPass" parameterType="com.ton.entity.Student">
+        UPDATE Student SET
+        stupass=#{stupass}
+        WHERE stuId=#{stuId}
+    </update>
+
+	<update id="updateBuyerPass" parameterType="com.ton.entity.Buyer">
+        UPDATE Buyer SET
+        buyerpass=#{buyerpass}
+        WHERE buyerid=#{buyerid}
+    </update>
+	<update id="updateAdminPass" parameterType="com.ton.entity.Student">
+        UPDATE Admin SET
+        adminpass=#{adminpass}
+        WHERE adminid=#{adminid}
+    </update>
+
+	
+</mapper>
